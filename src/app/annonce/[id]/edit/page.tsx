@@ -3,6 +3,7 @@
 import { useState, useEffect, FormEvent } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { ImageUploader } from "@/components/ImageUploader";
 import { WILAYAS, CARBURANTS, BOITES, CATEGORIES, ANNEES } from "@/lib/utils";
 
 export default function EditAnnoncePage() {
@@ -11,6 +12,8 @@ export default function EditAnnoncePage() {
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState<Record<string, string>>({});
+  const [existingImages, setExistingImages] = useState<string[]>([]);
+  const [newPhotos, setNewPhotos] = useState<File[]>([]);
 
   useEffect(() => {
     fetch(`/api/annonces/${id}`)
@@ -31,6 +34,7 @@ export default function EditAnnoncePage() {
           telephone: d.telephone || "",
           categorie: d.categorie || "",
         });
+        try { setExistingImages(JSON.parse(d.images || "[]")); } catch { setExistingImages([]); }
       })
       .catch(() => router.push("/mes-annonces"));
   }, [id, router]);
@@ -38,14 +42,28 @@ export default function EditAnnoncePage() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setLoading(true);
+
+    let allImages = [...existingImages];
+    if (newPhotos.length > 0) {
+      const fd = new FormData();
+      newPhotos.forEach(p => fd.append("photos", p));
+      const r = await fetch("/api/upload", { method: "POST", body: fd });
+      const d = await r.json();
+      if (d.urls) allImages.push(...d.urls);
+    }
+
     const res = await fetch(`/api/annonces/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify({ ...form, images: JSON.stringify(allImages) }),
     });
     if (res.ok) router.push("/mes-annonces?updated=1");
     else alert("Erreur");
     setLoading(false);
+  }
+
+  function removeExisting(i: number) {
+    setExistingImages(prev => prev.filter((_, idx) => idx !== i));
   }
 
   if (!session?.user) return <div className="max-w-lg mx-auto px-4 py-20 text-center text-gray-500">Connectez-vous</div>;
@@ -55,7 +73,7 @@ export default function EditAnnoncePage() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold text-gray-900 mb-2">Modifier l'annonce</h1>
+      <h1 className="text-2xl font-bold text-gray-900 mb-2">Modifier l&apos;annonce</h1>
       <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
@@ -120,6 +138,22 @@ export default function EditAnnoncePage() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Téléphone</label>
             <input value={form.telephone || ""} onChange={set("telephone")} type="tel" className="w-full border border-gray-300 rounded px-3 py-2 text-sm" />
+          </div>
+          <div className="sm:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Photos existantes</label>
+            <div className="flex flex-wrap gap-2">
+              {existingImages.map((url, i) => (
+                <div key={i} className="relative w-20 h-20 rounded-lg overflow-hidden border border-gray-200">
+                  <img src={url} alt="" className="w-full h-full object-cover" />
+                  <button type="button" onClick={() => removeExisting(i)}
+                    className="absolute top-0.5 right-0.5 w-5 h-5 bg-red-600 text-white rounded-full flex items-center justify-center text-xs">×</button>
+                </div>
+              ))}
+              {existingImages.length === 0 && <p className="text-xs text-gray-400">Aucune photo</p>}
+            </div>
+          </div>
+          <div className="sm:col-span-2">
+            <ImageUploader photos={newPhotos} onChange={setNewPhotos} />
           </div>
           <div className="sm:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>

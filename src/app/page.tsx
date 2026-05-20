@@ -6,6 +6,8 @@ import { AnnoncesCarousel } from "../components/AnnoncesCarousel";
 import { BrandGrid } from "../components/BrandGrid";
 import { ChatBot } from "../components/ChatBot";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const annonces = await prisma.annonce.findMany({
     orderBy: { createdAt: "desc" },
