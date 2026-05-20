@@ -406,6 +406,7 @@ export type FavoriCreateOrConnectWithoutUserInput = {
 
 export type FavoriCreateManyUserInputEnvelope = {
   data: Prisma.FavoriCreateManyUserInput | Prisma.FavoriCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
 export type FavoriUpsertWithWhereUniqueWithoutUserInput = {
@@ -453,6 +454,7 @@ export type FavoriCreateOrConnectWithoutAnnonceInput = {
 
 export type FavoriCreateManyAnnonceInputEnvelope = {
   data: Prisma.FavoriCreateManyAnnonceInput | Prisma.FavoriCreateManyAnnonceInput[]
+  skipDuplicates?: boolean
 }
 
 export type FavoriUpsertWithWhereUniqueWithoutAnnonceInput = {
@@ -1243,6 +1245,7 @@ export type FavoriCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * The data used to create many Favoris.
    */
   data: Prisma.FavoriCreateManyInput | Prisma.FavoriCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1261,6 +1264,7 @@ export type FavoriCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * The data used to create many Favoris.
    */
   data: Prisma.FavoriCreateManyInput | Prisma.FavoriCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

@@ -338,6 +338,7 @@ export type ModeleCreateOrConnectWithoutMarqueInput = {
 
 export type ModeleCreateManyMarqueInputEnvelope = {
   data: Prisma.ModeleCreateManyMarqueInput | Prisma.ModeleCreateManyMarqueInput[]
+  skipDuplicates?: boolean
 }
 
 export type ModeleUpsertWithWhereUniqueWithoutMarqueInput = {
@@ -1095,6 +1096,7 @@ export type ModeleCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * The data used to create many Modeles.
    */
   data: Prisma.ModeleCreateManyInput | Prisma.ModeleCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1113,6 +1115,7 @@ export type ModeleCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * The data used to create many Modeles.
    */
   data: Prisma.ModeleCreateManyInput | Prisma.ModeleCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

@@ -784,6 +784,7 @@ export type AnnonceCreateOrConnectWithoutUserInput = {
 
 export type AnnonceCreateManyUserInputEnvelope = {
   data: Prisma.AnnonceCreateManyUserInput | Prisma.AnnonceCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
 export type AnnonceUpsertWithWhereUniqueWithoutUserInput = {
@@ -1843,6 +1844,7 @@ export type AnnonceCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * The data used to create many Annonces.
    */
   data: Prisma.AnnonceCreateManyInput | Prisma.AnnonceCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1861,6 +1863,7 @@ export type AnnonceCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * The data used to create many Annonces.
    */
   data: Prisma.AnnonceCreateManyInput | Prisma.AnnonceCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */
