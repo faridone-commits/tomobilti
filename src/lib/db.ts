@@ -12,7 +12,7 @@ function createPrismaClient() {
     });
     return new PrismaClient({ adapter });
   }
-  return new PrismaClient({ datasourceUrl: url || "file:./prisma/dev.db" });
+  return new PrismaClient();
 }
 
 export const prisma = globalForPrisma.prisma ?? createPrismaClient();
