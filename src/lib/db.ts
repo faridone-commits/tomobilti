@@ -8,7 +8,7 @@ function createPrismaClient() {
   const url = process.env.DATABASE_URL || "file:./prisma/dev.db";
   const adapter = url.startsWith("postgresql")
     ? new PrismaPg({ connectionString: url, ssl: { rejectUnauthorized: false } })
-    : new PrismaLibSQL({ url });
+    : new PrismaLibSql({ url });
   return new PrismaClient({ adapter });
 }
 
