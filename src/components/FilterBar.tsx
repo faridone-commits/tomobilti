@@ -124,7 +124,7 @@ export function FilterBar() {
           {ANNEES.map(a => <option key={a} value={a}>{a}</option>)}
         </select>
         <input value={prixMax} onChange={e => setPrixMax(e.target.value)} type="number"
-          placeholder="Prix max (M DA)" className="border border-gray-300 rounded px-3 py-2 text-sm" />
+          placeholder="Prix max (M DA)" className="border border-gray-300 rounded px-3 py-2 text-sm [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
       </div>
       <button onClick={search} className="bg-primary-600 text-white px-5 py-2 rounded text-sm hover:bg-primary-700 transition-colors font-medium">
         Rechercher

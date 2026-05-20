@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-400 text-sm">
@@ -10,9 +12,9 @@ export function Footer() {
           <div>
             <p className="text-white font-medium mb-2">Navigation</p>
             <div className="space-y-1 text-xs">
-              <a href="/" className="block hover:text-white">Accueil</a>
-              <a href="/deposer" className="block hover:text-white">Déposer une annonce</a>
-              <a href="/favoris" className="block hover:text-white">Favoris</a>
+              <Link href="/" className="block hover:text-white">Accueil</Link>
+              <Link href="/deposer" className="block hover:text-white">Déposer une annonce</Link>
+              <Link href="/favoris" className="block hover:text-white">Favoris</Link>
             </div>
           </div>
           <div>

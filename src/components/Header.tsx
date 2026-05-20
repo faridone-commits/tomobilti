@@ -7,6 +7,7 @@ import { useState } from "react";
 export function Header() {
   const { data: session } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -19,11 +20,25 @@ export function Header() {
           <nav className="hidden md:flex items-center gap-4 text-sm text-gray-600">
             <Link href="/" className="hover:text-primary-600">Accueil</Link>
             <Link href="/deposer" className="hover:text-primary-600">Vendre</Link>
+            <Link href="/favoris" className="hover:text-primary-600">Favoris</Link>
           </nav>
         </div>
 
         <div className="flex items-center gap-3 text-sm">
-          <Link href="/favoris" className="hidden md:block text-gray-500 hover:text-primary-600">❤️ Favoris</Link>
+          <button
+            className="md:hidden p-2 text-gray-600 hover:text-primary-600"
+            onClick={() => setMobileNavOpen(!mobileNavOpen)}
+            aria-label="Menu"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {mobileNavOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+
           {session?.user ? (
             <div className="relative">
               <button
@@ -45,7 +60,7 @@ export function Header() {
             </div>
           ) : (
             <Link
-              href="/api/auth/signin"
+              href="/auth/login"
               className="bg-primary-600 text-white px-4 py-1.5 rounded text-sm hover:bg-primary-700"
             >
               Connexion
@@ -53,6 +68,20 @@ export function Header() {
           )}
         </div>
       </div>
+
+      {mobileNavOpen && (
+        <div className="md:hidden border-t border-gray-200 bg-white px-4 py-3 space-y-2">
+          <Link href="/" onClick={() => setMobileNavOpen(false)} className="block py-2 text-sm text-gray-600 hover:text-primary-600">Accueil</Link>
+          <Link href="/deposer" onClick={() => setMobileNavOpen(false)} className="block py-2 text-sm text-gray-600 hover:text-primary-600">Vendre</Link>
+          <Link href="/favoris" onClick={() => setMobileNavOpen(false)} className="block py-2 text-sm text-gray-600 hover:text-primary-600">Favoris</Link>
+          {session?.user && (
+            <>
+              <Link href="/mes-annonces" onClick={() => setMobileNavOpen(false)} className="block py-2 text-sm text-gray-600 hover:text-primary-600">Mes annonces</Link>
+              <button onClick={() => { setMobileNavOpen(false); signOut(); }} className="block py-2 text-sm text-red-600">Déconnexion</button>
+            </>
+          )}
+        </div>
+      )}
     </header>
   );
 }
