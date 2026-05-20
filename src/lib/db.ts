@@ -4,14 +4,15 @@ import { PrismaPg } from "@prisma/adapter-pg";
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
 function createPrismaClient() {
-  if (process.env.DATABASE_URL?.startsWith("postgresql")) {
+  const url = process.env.DATABASE_URL;
+  if (url?.startsWith("postgresql")) {
     const adapter = new PrismaPg({
-      connectionString: process.env.DATABASE_URL,
+      connectionString: url,
       ssl: { rejectUnauthorized: false },
     });
     return new PrismaClient({ adapter });
   }
-  return new PrismaClient();
+  return new PrismaClient({ datasourceUrl: url || "file:./prisma/dev.db" });
 }
 
 export const prisma = globalForPrisma.prisma ?? createPrismaClient();
